@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JsonFormat</title>
+</head>
+<body>
+  <div id="content">
+    <div id="json-content"></div>
+    <button onclick="jsonFormat(obj)">请点击</button>
+  </div>
+  <script>
+//    var str = "{""}"
+    var obj = {
+      name:"aa",
+      age:"18",
+      aihao:{
+        one:"乒乓球",
+        two:"篮球",
+        three:{
+          a:"羽毛球",
+          b:"排球",
+          c:[1,2,3]
+        }
+      },
+      num:16
+    };
+//    test = '11';
+//    console.log(typeof test)
+    var jsonContent = document.getElementById("json-content");
+    function jsonFormat(jsonStr) {
+//      try {
+//        var jsonObj  = JSON.parse(jsonStr);
+//      }catch (err){
+//        console.log(err);
+//        return;
+//      }
+      jsonContent.innerHTML =  "<div>{</div>"+json2html(jsonStr)+"<div>}</div>";
+    }
+    function json2html(obj) {
+      var item = '';
+      var jsonObj = obj;
+      if(typeof jsonObj == 'object'){
+        for(var a in jsonObj){
+            if(typeof jsonObj[a] == 'object' && !(jsonObj[a] instanceof Array)){
+//            如果属性是对象
+              item += '<div><span>'+a+':{</span><div style="padding-left: 20px">'+json2html(jsonObj[a])+'</div>}</div>'
+            }else {
+//            属性不是对象
+              item += '<div><span>'+a+'</span>:<span>'+type(jsonObj[a])+'</span></div>'
+            }
+        }
+        return item;
+      }
+    }
+    function type(value) {
+      if(typeof value =='string'){
+          return '"'+value+'"'
+      }else if(typeof value == "number"){
+          return value
+      }else {
+          return '['+value+']'
+      }
+    }
+  </script>
+  <style>
+    #content{
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background-color: antiquewhite;
+    }
+    #json-content{
+      width: inherit;
+      height: 95%;
+      background-color: aquamarine;
+      overflow: auto;
+    }
+    div{
+      margin-top: 5px;
+    }
+  </style>
+</body>
+</html>

@@ -5,6 +5,8 @@
       <dialogueBubble class="bubble"
                       :class="{'right':isRight,'left':!isRight}"
                       :isRight="isRight"
+                      @showCur="$emit('showCur')"
+                      @showNext="$emit('showNext')"
                       :dialogContent="dialogContent">
       </dialogueBubble>
       <div class="people right" v-if="isRight"></div>

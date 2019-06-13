@@ -4,18 +4,26 @@
 <template>
     <div id="dialogue" ref="dialogue">
       <a class="hint" v-text="hint"></a>
-      <dialogPeople v-for="item,index in dialog"
-                    :isRight="item.isRight"
-                    :dialogContent="item.content"
-                    v-if="index<=curIndex"
-                    ref="people"
-                    :key="index">
-      </dialogPeople>
+      <btnHearten class="hearten"></btnHearten>
+      <div class="content" ref="content">
+        <dialogPeople v-for="item,index in dialog"
+                      :isRight="item.isRight"
+                      :dialogContent="item.content"
+                      @showCur="showCur"
+                      @showNext="showNext"
+                      v-if="index <= curIndex"
+                      ref="people"
+                      :key="index">
+        </dialogPeople>
+      </div>
+      <div class="play-content">
+      </div>
     </div>
 </template>
 
 <script>
-  import dialogPeople from './dialogue-people'
+  import dialogPeople from './dialogue-people';
+  import btnHearten from './btn-hearten';
     export default {
       name: "dialogue",
       data(){
@@ -65,10 +73,10 @@
         }
       },
       components:{
-        dialogPeople
+        dialogPeople,btnHearten
       },
       created(){
-        this.initData();
+        // this.initData();
       },
       methods:{
         initData(){
@@ -78,17 +86,27 @@
               return
             }
             this.curIndex++;
-            this.$nextTick(()=>{
-              this.getPeople();
-            });
           },3000)
         },
+        showCur(){
+          this.$nextTick(()=>{
+            this.getPeople();
+          });
+        },
+        showNext(){
+          this.$nextTick(()=>{
+            this.getPeople();
+            setTimeout(()=>{
+              this.curIndex++;
+            },200)
+          });
+        },
         getPeople(){ //自动滚动
-           let people = this.$refs.people;
+           let people = this.$refs.people.concat([]);
            let el = people.pop().$el;
-           let dialogue = this.$refs.dialogue;
-           this.scrollTop += el.offsetHeight
-           dialogue.scrollTop = this.scrollTop;
+           let content = this.$refs.content;
+           this.scrollTop += el.offsetHeight;
+           content.scrollTop = this.scrollTop;
         }
       },
       beforeDestroy() {
@@ -103,8 +121,6 @@
   width: 100%;
   height: 100%;
   background-color: salmon;
-  padding: 50px 0;
-  overflow: auto;
   .hint{
     position: absolute;
     display: flex;
@@ -113,6 +129,21 @@
     top: 0;
     left: 20%;
     z-index: 20;
+  }
+  .hearten{
+    bottom: 15%;
+  }
+  .content{
+    position: relative;
+    width: 100%;
+    height: 85%;
+    overflow: auto;
+    padding: 20px 50px;
+  }
+  .play-content{
+    width: 100%;
+    height: 15%;
+    background-color: cadetblue;
   }
 }
 </style>

@@ -4,7 +4,7 @@
 <template>
     <div id="dialogue" ref="dialogue">
       <a class="hint" v-text="hint"></a>
-      <btnHearten class="hearten"></btnHearten>
+      <btnHearten class="hearten" @dismiss="showHearten=false" v-if="showHearten"></btnHearten>
       <div class="content" ref="content">
         <dialogPeople v-for="item,index in dialog"
                       :isRight="item.isRight"
@@ -17,6 +17,7 @@
         </dialogPeople>
       </div>
       <div class="play-content">
+        <div class="btn" @click="showHearten=true">鼓励</div>
       </div>
     </div>
 </template>
@@ -67,6 +68,7 @@
               content:"还是敷衍一下吧，哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈"
             }
           ],
+          showHearten:false,
           curIndex:0,
           scrollTop:0,
           time:0
@@ -141,9 +143,17 @@
     padding: 20px 50px;
   }
   .play-content{
+    display: flex;
+    justify-content: center;
     width: 100%;
     height: 15%;
     background-color: cadetblue;
+    .btn{
+      width: 100px;
+      height: 80px;
+      margin-top: 40px;
+      background-color: gold;
+    }
   }
 }
 </style>

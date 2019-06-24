@@ -2,8 +2,9 @@
   <div id="app">
      <div>这是一个demo</div>
      <div class="demo">
-       <finding v-if="showFinding" @findPeople="toDialogue()"></finding>
+       <finding @findPeople="toDialogue()" v-if="false"></finding>
        <dialogue v-if="!showFinding"></dialogue>
+       <wave></wave>
        <zyDemo v-if="false"></zyDemo>
      </div>
   </div>
@@ -12,6 +13,7 @@
 <script>
 import finding from "./dialog/finding/finding"
 import dialogue from "./dialog/dialogue/dialogue"
+import wave from "./dialog/dialogue/wave"
 import zyDemo from "./zy_demo"
 export default {
   name: 'app',
@@ -20,7 +22,7 @@ export default {
       showFinding:true
     }
   },
-  components:{finding,zyDemo,dialogue},
+  components:{finding,zyDemo,dialogue,wave},
   created(){
     if (typeof (androidJs) != 'undefined') {
       androidJs.closeWel();

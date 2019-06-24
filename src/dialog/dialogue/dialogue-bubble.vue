@@ -74,6 +74,12 @@
             this.curIndex++;
             this.initAnimation();
           },300)
+        },
+        grade(){
+          let obj={
+            content:this.dialogContent,
+            file_name:new Date().getTime()+".wav",//保证录音文件名唯一性
+          }
         }
       }
     }

@@ -17,7 +17,8 @@
         </dialogPeople>
       </div>
       <div class="play-content">
-        <div class="btn" @click="showHearten=true">鼓励</div>
+        <div class="btn" @click="showHearten=true" v-if="isShowBtn">鼓励</div>
+        <wave class="wave"></wave>
       </div>
     </div>
 </template>
@@ -25,6 +26,7 @@
 <script>
   import dialogPeople from './dialogue-people';
   import btnHearten from './btn-hearten';
+  import wave from './wave'
     export default {
       name: "dialogue",
       data(){
@@ -33,7 +35,7 @@
           dialog:[
             {
               isRight:0,
-              content:"这里是第一句内容，哈哈哈，你好吗"
+              content:"how are you?"
             },
             {
               isRight:1,
@@ -69,13 +71,14 @@
             }
           ],
           showHearten:false,
+          isShowBtn:false,
           curIndex:0,
           scrollTop:0,
           time:0
         }
       },
       components:{
-        dialogPeople,btnHearten
+        dialogPeople,btnHearten,wave
       },
       created(){
         // this.initData();
@@ -153,6 +156,9 @@
       height: 80px;
       margin-top: 40px;
       background-color: gold;
+    }
+    .wave{
+      margin-top: 100px;
     }
   }
 }

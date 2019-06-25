@@ -1,69 +1,77 @@
 <template>
   <div id="wave">
-<!--    <svg version="1.1" width="2048" height="50" xmlns="http://www.w3.org/2000/svg">-->
-<!--      <g>-->
-<!--        <path transform="" d="M0,0 C512,100 1536,-50 2048,50" stroke="black" stroke-width="5" fill="none">-->
-<!--        </path>-->
-<!--        <animateTransform attributeName="transform" from="0" to="-1024"-->
-<!--                          begin="0" dur="1.5" calcMode="linear" repeatDur="300s" type="translate"></animateTransform>-->
-<!--      </g>-->
-<!--      <g>-->
-<!--        <path transform="" d="M2048,50 C2560,-50 3072,100 3584,0" stroke="black" stroke-width="5" fill="none">-->
-<!--        </path>-->
-<!--        <animateTransform attributeName="transform" from="0" to="-1024"-->
-<!--                          begin="0" dur="1.5" calcMode="linear" repeatDur="300s" type="translate"></animateTransform>-->
-<!--      </g>-->
-<!--    </svg>-->
-    <canvas class="wave-line"  width="2048" height="50" ref="line"></canvas>
+    <canvas class="wave-line"  width="1922" height="70" ref="line"></canvas>
   </div>
 </template>
 
 <script>
     export default {
       name: "wave",
+      data(){
+        return{
+          cxt:{},
+          a:0,
+          screenR:0
+        }
+      },
       created(){
         this.$nextTick(()=>{
           this.getLine();
         });
       },
+      mounted(){
+        this.screenR = window.screen.width/2560;
+      },
       methods:{
         getLine(){
           let canvas = this.$refs.line;
-          canvas.style="border:1px solid #c3c3c3;";
+          canvas.width = 1922;
+          canvas.height=70;
           let cxt= canvas.getContext("2d");
-          cxt.moveTo(2048,25);
-          let x = 0;
-          let time = setInterval(()=>{
-            if(x<2048){
-              x++;
-              let radians = x/2048 * Math.PI * 2;
-              let scale = (Math.sin(radians - Math.PI * 0.5) + 1) * 0.5;
-              let y = Math.sin(x * 0.02 +2) * 25 * scale;
-              cxt.lineTo(x,y);
-              cxt.stroke()
+          this.cxt = cxt;
+          this.animation(canvas);
+        },
+        animation(canvas){
+          cancelAnimationFrame(time);
+          let time = requestAnimationFrame(()=>{
+            if(this.a>=1922){
               return;
             }
-            clearInterval(time);
-          },2);
+            this.cxt.clearRect(0,0,1922,70);
+            let cxt= canvas.getContext("2d");
+            this.cxt = cxt;
+            this.a+=8;
+            this.cxt.lineWidth = 2;
+            this.cxt.strokeStyle = "#00dca0";
+            this.setLine(cxt,1922,this.a);
+            this.cxt.strokeStyle = "#fedc64";
+            this.setLine(cxt,1922,this.a-2,33);
+            this.cxt.strokeStyle = "#1d61df";
+            this.setLine(cxt,1922,this.a-5,20);
+            this.animation(canvas);
+          });
         },
-        // setLine(width){
-        //   for(let x = 0;x <width; x++){
-        //     let radians = x/width * Math.PI * 2;
-        //     let scale = (Math.sin(radians - Math.PI * 0.5) + 1) * 0.5;
-        //     let y = Math.sin(x * 0.02 +2) * 50 * scale;
-        //   }
-        // }
+        setLine(cxt,width,right=0,amp=33){
+          cxt.beginPath();
+          for(let x = 0;x <width; x+=6){
+            let radians = x/width * Math.PI * 2;
+            let scale = (Math.sin(radians - Math.PI * 0.5) + 1) * 0.5;
+            let y = Math.sin(x * 0.01 +right) * amp * scale;
+            cxt.lineTo(x,y+35);
+            cxt.stroke()
+          }
+          cxt.closePath();
+        }
       }
     }
 </script>
 
 <style lang="scss" scoped>
 #wave{
-  /*svg{*/
-  /*  background-color: chocolate;*/
-  /*}*/
   canvas{
-    background-color: chocolate;
+    background-color: #ffffff;
+    width: 1922*0.9+px;
+    height: 70*0.9+px;
   }
 }
 </style>

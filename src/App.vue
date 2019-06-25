@@ -4,7 +4,8 @@
      <div class="demo">
        <finding @findPeople="toDialogue()" v-if="false"></finding>
        <dialogue v-if="!showFinding"></dialogue>
-       <wave></wave>
+       <wave v-if="false"></wave>
+       <wave2></wave2>
        <zyDemo v-if="false"></zyDemo>
      </div>
   </div>
@@ -14,6 +15,7 @@
 import finding from "./dialog/finding/finding"
 import dialogue from "./dialog/dialogue/dialogue"
 import wave from "./dialog/dialogue/wave"
+import wave2 from "./dialog/dialogue/wave_2"
 import zyDemo from "./zy_demo"
 export default {
   name: 'app',
@@ -22,7 +24,7 @@ export default {
       showFinding:true
     }
   },
-  components:{finding,zyDemo,dialogue,wave},
+  components:{finding,zyDemo,dialogue,wave,wave2},
   created(){
     if (typeof (androidJs) != 'undefined') {
       androidJs.closeWel();
@@ -53,6 +55,7 @@ div,a,p,span,img{
   height: 100%;
   left: 0;
   top:0;
+  overflow: auto;
   .demo{
     width: 80%;
     height: 1457px;
